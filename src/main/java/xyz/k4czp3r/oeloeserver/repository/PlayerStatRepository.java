@@ -1,34 +1,34 @@
 package xyz.k4czp3r.oeloeserver.repository;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import org.bukkit.entity.Player;
-import xyz.k4czp3r.oeloeserver.domain.PlayerStat;
+import xyz.k4czp3r.oeloeserver.domain.PlayerStats;
+import xyz.k4czp3r.oeloeserver.models.ConfigEntry;
+import xyz.k4czp3r.oeloeserver.utils.ConfigUtils;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
 public class PlayerStatRepository {
-    private final MongoCollection<PlayerStat> collection;
+    private final MongoCollection<PlayerStats> collection;
 
-    public PlayerStatRepository() {
-        MongoDatabase database = Database.getMongoClient();
-        collection = database.getCollection("PlayerStat", PlayerStat.class);
+    public PlayerStatRepository(ConfigUtils configUtils) {
+        MongoDatabase database = Database.getMongoClient(
+                configUtils.getConfigString(ConfigEntry.MONGO_URL)
+        );
+        collection = database.getCollection("PlayerStat", PlayerStats.class);
     }
 
-    public void updateOrInsert(PlayerStat playerStat)
+    public void updateOrInsert(PlayerStats playerStats)
     {
-        PlayerStat foundPlayerStat = collection.find(eq("statType", playerStat.getStatType())).first();
-        if(foundPlayerStat == null)
+        PlayerStats foundPlayerStats = collection.find(eq("playerId", playerStats.getPlayerId())).first();
+        if(foundPlayerStats == null)
         {
-            collection.insertOne(playerStat);
+            collection.insertOne(playerStats);
         }
         else{
-            collection.replaceOne(eq("statType", playerStat.getStatType()), playerStat);
+            collection.replaceOne(eq("playerId", playerStats.getPlayerId()), playerStats);
         }
     }
 }
