@@ -22,6 +22,7 @@ public class PlayerEventsListener implements Listener {
     {
         PlayerStatus newPlayerStatus = new PlayerStatus.Builder(
                 event.getPlayer().getUniqueId().toString(),
+                event.getPlayer().getName(),
                 PlayerStatusType.JOINED
         ).build();
 
@@ -34,6 +35,7 @@ public class PlayerEventsListener implements Listener {
     {
         PlayerStatus newPlayerStatus = new PlayerStatus.Builder(
                 event.getPlayer().getUniqueId().toString(),
+                event.getPlayer().getName(),
                 PlayerStatusType.LEFT
         ).build();
 
