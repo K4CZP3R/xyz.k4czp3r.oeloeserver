@@ -1,0 +1,4 @@
+name: OeloeServer
+version: 1.0
+main: xyz.k4czp3r.oeloeserver.OeloeServer
+api-version: 1.16
