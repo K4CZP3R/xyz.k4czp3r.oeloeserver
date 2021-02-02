@@ -5,9 +5,8 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags: 
+      - '*.rel'
 
 jobs:
   build:
@@ -22,3 +21,23 @@ jobs:
         java-version: '15'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: true
+        prerelase: false
+    - name: Upload release asset
+      id: upload_release_asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./target/oeloeserver-1.0-SNAPSHOT-shaded.jar
+        asset_name: oeloeserver-latest.jar
+        asset_content_type: application/java-archive
