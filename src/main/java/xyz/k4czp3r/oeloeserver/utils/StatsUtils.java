@@ -44,7 +44,8 @@ public class StatsUtils {
             Statistic.ITEM_ENCHANTED,
             Statistic.TIME_SINCE_REST,
             Statistic.TIME_SINCE_DEATH,
-            Statistic.SNEAK_TIME
+            Statistic.SNEAK_TIME,
+            Statistic.PLAY_ONE_MINUTE
             );
     public static List<Material> CRAFTABLE_TOOLS = Arrays.asList(
             Material.DIAMOND_PICKAXE,
